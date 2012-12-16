@@ -1,20 +1,32 @@
+html{ font-size: 125%; }
+
+body{ font-size: .5em; }
+
 .registro{
-    width: 90%;
+    padding: 0px;
 }
+.registro a:link{text-decoration: none;}
+
 .comercio{
-    font-weight: bolder;
+    font-weight: bold;
     padding-left: 4px;
-    width: inherit;
+    padding-top: 4px;
     text-align: center;
+    font-size: 1em;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    white-space:pre-wrap;
 }
 .aviso{
-    font-size: 0.8em;
+    font-size: 0.7em;
     color: #2F3E46;
     width: 100%;
 }
 .descripcion{
-    font-size: 0.7em;
+    font-size: 1em;
     padding-left: 4px;
+    width:100%;
+    white-space:pre-wrap;
+    font-family: Tahoma, Geneva, sans-serif;
 }
 .promo{
     color: #F38000;
@@ -22,23 +34,48 @@
     padding-left: 4px;
     text-align: center;
     vertical-align: middle;
+    white-space:pre-wrap;
+    font-size: 1em;
+    font-family: Tahoma, Geneva, sans-serif;
 }
 .precio{
-    font-size: 1.5em;
-    font-weight: bolder;
-    color: #F38000;
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #FF6A15;
     text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    vertical-align: middle;
 }
 .precio:before{
-    content: "$"; 
+    content: "$";
+    font-size: 0.7em; 
 }
 .distancia{
-    font-size: 0.7em;
-    text-align: center;    
+    font-size: 0.9em;
+    text-align: center;
+    vertical-align: middle;    
 }
 .distancia:after{
     content: " mts";    
 }
+.det-distancia{
+    font-size: 0.9em;
+    text-align: center;
+    vertical-align: middle;    
+}
+.det-distancia:after{
+    font-size: 0.6em;
+    content: " mts(*)";    
+}
+
+div>sup{
+    font-size: 0.5em;
+}
+
+span>sup{
+    font-size: 0.7em;
+}
+
 .shadow {
     -moz-box-shadow: 3px 3px 4px #000;
     -webkit-box-shadow: 3px 3px 4px #000;
@@ -49,6 +86,43 @@
     filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
 }
 .image{
-    height: 4em;
-    width: 4em;
+    height: 3.5em;
+    width: 3.5em;
+}
+.arrow-r{
+    background-image: url(images/arrow.png);
+    background-repeat: no-repeat;
+    background-position:center;
+    width: 6px;
+}
+
+.det-comercio{
+    color: #FF6A15;
+    font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
+    white-space:pre-wrap;
+    font-size: 1.7em;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+
+.wrapper{
+   width: 100%;
+   margin: 0 auto;
+}
+.wrapmiddle{
+   float: left;
+   width: 100%;
+}
+.left{
+   float: left;
+   width: 141px;
+   margin-left: -100%;
+}
+.right{
+   float: right;
+   width: 22px;
+   margin-left: -22px;
+   top: -30px;
 }
