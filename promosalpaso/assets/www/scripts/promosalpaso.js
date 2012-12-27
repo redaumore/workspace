@@ -27,13 +27,16 @@ var _baseServUri = _baseUri + "services/";
 var _baseAjaxUri = _baseUri + "Backendajax/";
 var _activePromo;
 var _firstAttemp = true;
+var _firstAttempFav = true;
+var _inFavorites = false;
 
-$(document).delegate( "#detail", "pagebeforeshow", function(event){
-    id_promotion = window.localStorage.getItem("activePromotion");
-    callPromoDetail(id_promotion);
-});
+$(document).addEventListener("deviceready", onDeviceReady, false);
 
-$(document).delegate( "#page-map", "pageshow", function(event){
+function onDeviceReady(){
+    //document.addEventListener("backbutton", onBackKeyDown, false);
+}
+
+$(document).delegate( "#page-map", "pagebeforeshow", function(event){
     initialize();
     var _width = $(window).width();
     var _height = $(window).height();
@@ -50,6 +53,14 @@ $(document).ready(function(){
     		{maximumAge:600000, timeout:5000, enableHighAccuracy: true});
 });
 
+function onBackKeyDown(){
+    if(_inFavorites){
+        _inFavorites = false;
+        loadPromoList();
+    }
+            
+}
+
 function loadPromoList(){
     $.ajax({
         url: _baseServUri + 'getpromolist',
@@ -65,18 +76,52 @@ function loadPromoList(){
         success: function(data, status){
                 window.localStorage.setItem("lastSearch", JSON.stringify(data));
                 if(data.length == 0)
-                    $.mobile.changePage($("#nopromos"));    
+                    $.mobile.changePage($("#nopromos"));
+                document.getElementById("promolist").innerHTML = "";    
                 $.each(data, function(i,item){
                     document.getElementById("promolist").innerHTML += getPromoRecord(item);
                 });
         },
         error: function(jqXHR, textStatus, errorThrown){
             if(_firstAttemp){
-                _firstAttemp = true;
+                _firstAttemp = false;
                 loadPromoList();
             }
             else{
-            navigator.notification.alert('Hubo un error recuperando las promociones. Por favor intentalo más tarde...', null, 'Error', 'Ok');
+            showMessage('Hubo un error recuperando las promociones. Por favor intentalo más tarde...', 'Error', 'Ok');
+            }
+        }
+    });
+}
+
+function loadPromoListByIds(ids){
+    $.ajax({
+        url: _baseServUri + 'getpromolistbyids',
+        dataType: 'jsonp',
+        data: {"ids": ids, 
+               "lat": _lat, 
+               "lng": _lng},
+        jsonp: 'jsoncallback',
+        contentType: "application/json; charset=utf-8",
+        timeout: 5000,
+        beforeSend: function (jqXHR, settings) {
+            url = settings.url + "?" + settings.data;
+        },
+        success: function(data, status){
+                if(data.length == 0)
+                    $.mobile.changePage($("#nopromos"));
+                document.getElementById("promolist").innerHTML = "";                        
+                $.each(data, function(i,item){
+                    document.getElementById("promolist").innerHTML += getPromoRecord(item);
+                });
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            if(_firstAttempFav){
+                _firstAttempFav = false;
+                loadPromoListByIds(ids);
+            }
+            else{
+                showMessage('Hubo un error recuperando las favoritas. Por favor intentalo más tarde...', 'Error', 'Ok');
             }
         }
     });
@@ -89,6 +134,7 @@ function getPromoRecord(promo){
     liString = liString.replace("#COMERCIO#", promo.name);
     liString = liString.replace("#DESCRIPCION#", promo.short_description);        
     liString = liString.replace("#PROMO#", promo.displayed_text);
+    liString = liString.replace("#PRECIO_DESDE#", (promo.value_since == 1)?"inline":"none");
     liString = liString.replace("#PRECIO#", formatPrice(promo.promo_value));
     liString = liString.replace("#DISTANCIA#", promo.distance);
     return liString;
@@ -96,7 +142,7 @@ function getPromoRecord(promo){
 
 function gotoPromo(id_promotion){
     window.localStorage.setItem("activePromotion", id_promotion);
-    $.mobile.changePage($("#detail"));
+    callPromoDetail(id_promotion);
 }
 
 function getPamarByName(url, paramName){ 
@@ -128,11 +174,11 @@ function callPromoDetail(promotion_id){
         },
         success: function(data, status){
                 loadPromoDetail(data);
+                $.mobile.changePage($("#detail"));
         },
         error: function(jqXHR, textStatus, errorThrown){
-            navigator.notification.alert(
+            showMessage(
             'Hubo un error accediendo a los datos de la Promo. Por favor intenta más tarde...',
-            null,
             'Error',
             'OK'
             );
@@ -167,16 +213,96 @@ function loadPromoDetail(item){
             $("#det-alarm_num").html(days);
             $("#det-alarm_type").html("días");
         } 
-            
+    }
+    if(item.value_since == "1")
+        $("#precio_desde").show();
+    else
+        $("#precio_desde").hide();
+    if(isFavorite(item.promotion_id)){
+        $("#favtext").html("Quitar de Favoritos");
+        $("#linkFavorite").unbind("click");
+        $("#linkFavorite").click(function(){deleteFavorite(item.promotion_id);});
+    }
+    else{
+        $("#favtext").html("Agregar a Favoritos");
+        $("#linkFavorite").unbind("click");
+        $("#linkFavorite").click(function(){saveFavorite();});
     }
     _promo_lat = item.latitude;
     _promo_lng = item.longitude;
 }
 
 function saveFavorite(){
-    alert("Favorito!!");
+    var located = false;
+    var favoritos = window.localStorage.getItem("favoritos");
+    var activePromo = window.localStorage.getItem("activePromotion");
+    if (favoritos != null){
+        var arrFav = favoritos.split(",");
+        for(var i = 0; i < arrFav.length; i++){
+            if(arrFav[i] == activePromo)
+                located = true;
+        }
+        if(!located)
+            favoritos = favoritos + activePromo + ",";
+    }
+    else{
+        favoritos = activePromo + ",";
+    }
+    window.localStorage.setItem("favoritos", favoritos);
+    showMessage("La promo se ha agregado a tus favoritos.", "Info", "Ok");    
 }
 
+function deleteFavorite(id){
+    var fav = window.localStorage.getItem("favoritos");
+    if(fav == null)
+        return;
+    arrFav = fav.split(",");
+    for(var i=0; i<arrFav.length; i++){
+        if(arrFav[i] = id)
+            arrFav.splice(i, 1);
+    }
+    if(arrFav.toString()=="")
+        window.localStorage.removeItem("favoritos");
+    else
+        window.localStorage.setItem("favoritos", arrFav.toString());
+    showMessage("La promo se ha eliminado de tus favoritos.", "Info", "Ok");
+}
+
+function isFavorite(id){
+    var fav = window.localStorage.getItem("favoritos");
+    if(fav == null)
+        return false;
+    arrFav = fav.split(",");
+    for(var i=0; i<arrFav.length; i++){
+        if(arrFav[i] == id)
+            return true;
+    }
+    return false;
+}
+
+function gotoFavoritos(){
+    var favoritos = window.localStorage.getItem("favoritos");
+    if(favoritos != null)
+        if(favoritos != ""){
+            _inFavorites = true;
+            loadPromoListByIds(favoritos.substring(0, favoritos.lastIndexOf(",")));
+            return;
+        }
+    showMessage('No tienes favoritos.', 'Info', 'Ok');        
+}
+
+function refreshPromoList(){
+    navigator.geolocation.getCurrentPosition(onSuccess, 
+            onError_highAccuracy, 
+            {maximumAge:600000, timeout:5000, enableHighAccuracy: true});        
+}
+
+function showMessage(message, title, button){
+    if(navigator.notification == null)
+        alert(message);
+    else
+        navigator.notification.alert(message, null, title, button);        
+}
 // Function called when phonegap is ready
 function setFullScreen() {
     //All pages at least 100% of viewport height
@@ -221,10 +347,11 @@ liString += '                        <p class="descripcion ui-li-desc">#DESCRIPC
 liString += '                        <p class="promo ui-li-desc">#PROMO#</p>';
 liString += '                     </td>';
 liString += '                     <td style="width: 30px;">';
-liString += '                       <table>';
-liString += '                          <tr><td style="border-bottom: solid 1px #9CAAC6; text-align: center"><span class="precio">#PRECIO#</span></td></tr>';
-liString += '                          <tr><td style="vertical-align: middle; text-align: center"><span class="distancia">#DISTANCIA#</span></td></tr>';
-liString += '                       </table>';
+liString += '                        <div style="text-align: center;">';
+liString += '                            <div class="desde" style="display: #PRECIO_DESDE#;">desde</div>';
+liString += '                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">#PRECIO#</span></div>';
+liString += '                            <div style="vertical-align: middle; text-align: center"><span class="distancia">#DISTANCIA#</span></div>';
+liString += '                        </div>';
 liString += '                     </td>';
 liString += '                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>';
 liString += '                  </tr>';
@@ -249,24 +376,26 @@ function formatPrice(price){
 //This method accepts a `Position` object, which contains
 //the current GPS coordinates
 var onSuccess = function(position) {
-	_lat = position.coords.latitude;
-	_lng = position.coords.longitude;
+	if(window.location == null)
+		console.log("No existe windows.location.hostname");
+	else
+		console.log("windows.location.hostname: " + window.location.hostname);
+	if(window.location.hostname == "promosalpaso.local"){
+        _lat = "-34.681774410598"; 
+        _lng = "-58.561710095183" ;
+    }
+    else{
+        _lat = position.coords.latitude;
+	    _lng = position.coords.longitude;
+    }
     loadPromoList(); 
 };
 
 //onError Callback receives a PositionError object
 function onError(error) {
-    msg = 'No se pudo obtener datos del localización. Te sugerimos realizar una búsqueda por dirección/localidad.';
-    if(navigator.notification != null){
-	navigator.notification.alert(
-            msg,
-            null,
-            'Localizaci?n',
-            'OK');
-    }
-    else
-        alert(msg);
-	/*SAN JUSTO*/
+    msg = 'No se pudo obtener datos del localización. Te sugerimos realizar una búsqueda por dirección/localidad. (SJ)';
+    showMessage(msg, 'Info', 'OK');
+    /*SAN JUSTO*/
 	_lat = "-34.681774410598"; 
 	_lng = "-58.561710095183" ;
     loadPromoList();
@@ -278,16 +407,8 @@ function onError_highAccuracy(error) {
         msg = 'No se pudo obtener datos del GPS. Se localizará por 3G, por lo que la localización puede presentar un desvío de 150 mts aproximadamente.';
         // Attempt to get GPS loc timed out after 5 seconds, 
         // try low accuracy location
-        if(navigator.notification != null){
-    	    navigator.notification.alert(
-                    msg,
-                    null,
-                    'GPS',
-                    'OK');
-        }
-        else{
-            alert(msg);
-        }
+        if(navigator.notification == null)
+    	    showMessage(msg, 'GPS', 'OK');
         navigator.geolocation.getCurrentPosition(
                    onSuccess, 
                    onError,
