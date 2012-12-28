@@ -16,5 +16,9 @@
     <author href="http://promosalpaso.com" email="soporte@promosalpaso.com">
         Rolando Daumas
     </author>
+    
+    <preference name="fullscreen" value="true" />
+    <gap:splash src="splash.png" />
+    <gap:splash src="images/splash/bb/splash.jpg" gap:platform="blackberry" />
 
 </widget>
