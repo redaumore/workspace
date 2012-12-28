@@ -33,20 +33,24 @@ function init(){
 </head>
 <body>
     <div data-role="page" id="one">
-        <div data-role="header">
-            <div class="ui-controlgroup-controls">
-                <table style="width: 100%; height: 50px; border-collapse:collapse;">
-                    <tr>
-                    <td style="text-align: left"><img src="images/logo-promosalpaso70.png" style="height: 40px; width: 40px;" /> </td>
-                    <td><a href="#" onclick="refreshPromoList();" style="width: 100%; height: 35px;" data-role="button" data-icon="refresh" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Refrescar" class="ui-btn ui-btn-inline ui-btn-icon-notext ui-corner-left ui-btn-up-b"><span class="ui-btn-inner ui-corner-left"><span class="ui-btn-text">Refrescar</span><span class="ui-icon ui-icon-refresh ui-icon-shadow">&nbsp;</span></span></a></td>
-                    <td><a href="#" onclick="gotoSearch();" style="width: 100%; height: 35px;" data-role="button" data-icon="search" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Buscar" class="ui-btn ui-btn-inline ui-btn-icon-notext ui-btn-up-b"><span class="ui-btn-inner"><span class="ui-btn-text">Buscar</span><span class="ui-icon ui-icon-search ui-icon-shadow">&nbsp;</span></span></a></td>
-                    <td><a href="#" onclick="gotoFavoritos();" style="width: 100%; height: 35px;" data-role="button" data-transition="flip" data-icon="star" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Favoritos" class="ui-btn ui-btn-up-b ui-btn-inline ui-btn-icon-notext ui-corner-right ui-controlgroup-last"><span class="ui-btn-inner ui-corner-right ui-controlgroup-last"><span class="ui-btn-text">Favoritos</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></td></tr>
-                </table>
+        <div data-role="header" class="ui-header ui-bar-a" role="banner">
+            <div style="height: 5em;">
+                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
+                <div style="padding-left: 3em; text-align: center; padding-top: 1em;"><img src="images/tit-promosalpaso.png" style="height: 3em;" /></div>
             </div>
-        </div><!-- /header -->
+        </div>
 
         <div data-role="content">
             <ul id="promolist" data-role="listview" class="ui-listview"></ul>    
+        </div>
+        <div data-role="footer">
+            <div data-role="navbar" class="ui-navbar ui-mini" role="navigation">
+                <ul class="ui-grid-b">
+                    <li class="ui-block-a"><a href="#" onclick="refreshPromoList();" data-icon="refresh" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-active ui-btn-up-a"></a></li>
+                    <li class="ui-block-b"><a href="#" onclick="gotoSearch();" data-icon="search" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
+                    <li class="ui-block-c"><a href="#" onclick="gotoFavoritos();" data-icon="star" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
+                </ul>
+            </div>  
         </div>
     </div>
     <div data-role="page" id="detail">

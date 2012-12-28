@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "com.promosalpaso"
+        versionCode="10" 
+        version   = "0.0.2">
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>Promos al Paso</name>
+
+    <description>
+        El mobile de Promos al Paso 
+    </description>
+
+    <author href="http://promosalpaso.com" email="soporte@promosalpaso.com">
+        Rolando Daumas
+    </author>
+
+</widget>
