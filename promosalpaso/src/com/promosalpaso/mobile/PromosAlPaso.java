@@ -12,7 +12,7 @@ public class PromosAlPaso extends DroidGap {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.setIntegerProperty("loadUrlTimeoutValue", 60000); 
-		super.loadUrl("file:///android_asset/www/index1.html");
+		super.loadUrl("file:///android_asset/www/index.html");
 		}
 
 }
