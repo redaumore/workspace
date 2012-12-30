@@ -17,7 +17,7 @@
         Rolando Daumas
     </author>
     
-    <preference name="fullscreen" value="true" />
+    <preference name="fullscreen" value="false" />
     <gap:splash src="splash.png" />
     <gap:splash src="images/splash/bb/splash.png" gap:platform="blackberry" />
 

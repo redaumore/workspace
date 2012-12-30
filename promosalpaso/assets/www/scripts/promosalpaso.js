@@ -335,7 +335,7 @@ var liString = new String();
 liString = '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="b" class="ui-btn ui-li-has-arrow ui-li ui-li-has-thumb ui-btn-up-c ui-li-static"  style="padding: 0px;">';
 liString += '   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-b" style="padding: 0px;">';
 liString += '       <div class="ui-btn-text registro">';
-liString += '           <a href="#" data-transition="flip" onclick="gotoPromo(#ID#);">'; //<a href="#ID#">';
+liString += '           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);">'; //<a href="#ID#">';
 liString += '               <table class="aviso">';
 liString += '                  <tr>';
 liString += '                     <td class="image" style="width: 50px;">';
