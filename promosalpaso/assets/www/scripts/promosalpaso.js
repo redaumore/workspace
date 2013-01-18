@@ -456,7 +456,7 @@ function getRegionsUpdate(){
 }    
 function addRegions(provinces, cities, version){
     var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
-    db.transaction(function(tx){populateRegionsDB(tx, provinces, cities)}, errorCB, successCB(version));
+    db.transaction(function(tx){populateRegionsDB(tx, provinces, cities)}, errorCB, function(){successCB(version)});
 }
 function populateRegionsDB(tx, provinces, cities) {
  tx.executeSql('DROP TABLE IF EXISTS province');
@@ -492,6 +492,7 @@ function errorProvinceDDL(err) {
         console.log("Error Province SQL: "+err.code);
     }
 function queryProvinceSuccess(tx, results){
+	$('#state_select').empty();
     for(i=0;i<results.rows.length;i++){
         $('#state_select').append('<option value="'+results.rows.item(i).province_id+'">' + results.rows.item(i).name + '</option>');
     }    
