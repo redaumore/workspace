@@ -33,7 +33,7 @@ var _inFavorites = false;
 $(document).addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady(){
-    //document.addEventListener("backbutton", onBackKeyDown, false);
+    //getRegionsUpdate();
 }
 
 $(document).delegate( "#page-map", "pagebeforeshow", function(event){
@@ -46,7 +46,8 @@ $(document).delegate( "#page-map", "pagebeforeshow", function(event){
 });
 
 $(document).ready(function(){
-    $(document).ajaxStart(function () { showProgress() }).ajaxStop(function () { hideProgress() });
+    getRegionsUpdate();
+	$.mobile.showPageLoadingMsg('a', "Buscando promos...", false);
     setFullScreen();
     navigator.geolocation.getCurrentPosition(onSuccess, 
     		onError_highAccuracy, 
@@ -75,12 +76,15 @@ function loadPromoList(){
         },
         success: function(data, status){
                 window.localStorage.setItem("lastSearch", JSON.stringify(data));
-                if(data.length == 0)
-                    $.mobile.changePage($("#nopromos"));
+                if(data.length == 0){
+                    showMessage('No se encontraron promos. Intenta nuestra búsqueda manual.', 'Info', 'Ok');
+                    $.mobile.changePage($("#search"));
+                }
                 document.getElementById("promolist").innerHTML = "";    
                 $.each(data, function(i,item){
                     document.getElementById("promolist").innerHTML += getPromoRecord(item);
                 });
+                $.mobile.hidePageLoadingMsg();
         },
         error: function(jqXHR, textStatus, errorThrown){
             if(_firstAttemp){
@@ -89,13 +93,14 @@ function loadPromoList(){
             }
             else{
             showMessage('Hubo un error recuperando las promociones. Por favor intentalo más tarde...', 'Error', 'Ok');
+            $.mobile.hidePageLoadingMsg();
             }
         }
     });
 }
 
 function loadPromoListByIds(ids){
-    $.ajax({
+	$.ajax({
         url: _baseServUri + 'getpromolistbyids',
         dataType: 'jsonp',
         data: {"ids": ids, 
@@ -141,6 +146,7 @@ function getPromoRecord(promo){
 }
 
 function gotoPromo(id_promotion){
+	$.mobile.showPageLoadingMsg('a', "Cargando promo...", false);
     window.localStorage.setItem("activePromotion", id_promotion);
     callPromoDetail(id_promotion);
 }
@@ -174,6 +180,7 @@ function callPromoDetail(promotion_id){
         },
         success: function(data, status){
                 loadPromoDetail(data);
+                $.mobile.hidePageLoadingMsg();
                 $.mobile.changePage($("#detail"));
         },
         error: function(jqXHR, textStatus, errorThrown){
@@ -182,6 +189,7 @@ function callPromoDetail(promotion_id){
             'Error',
             'OK'
             );
+            $.mobile.hidePageLoadingMsg();
         }
     });
     return promotion_detail;
@@ -298,10 +306,14 @@ function refreshPromoList(){
 }
 
 function showMessage(message, title, button){
-    if(navigator.notification == null)
+	$.mobile.showPageLoadingMsg('b', message, true);
+	setTimeout( function() { $.mobile.hidePageLoadingMsg(); }, 3000 );
+    /*
+	if(navigator.notification == null)
         alert(message);
     else
-        navigator.notification.alert(message, null, title, button);        
+        navigator.notification.alert(message, null, title, button);
+    */        
 }
 // Function called when phonegap is ready
 function setFullScreen() {
@@ -391,6 +403,21 @@ var onSuccess = function(position) {
     loadPromoList(); 
 };
 
+function onError_highAccuracy(error) {
+    var msg = "";
+    //if(error.code == 2)
+        msg = 'No se pudo obtener datos del GPS. Se localizará por 3G, por lo que la localización puede presentar un desvío de 150 mts aproximadamente.';
+        // Attempt to get GPS loc timed out after 5 seconds, 
+        // try low accuracy location
+        showMessage(msg, 'GPS', 'OK');
+        navigator.geolocation.getCurrentPosition(
+                   onSuccess, 
+                   onError,
+                   {maximumAge:600000, timeout:10000, enableHighAccuracy: false});
+        return;
+    //}
+}
+
 //onError Callback receives a PositionError object
 function onError(error) {
     msg = 'No se pudo obtener datos del localización. Te sugerimos realizar una búsqueda por dirección/localidad. (SJ)';
@@ -401,18 +428,147 @@ function onError(error) {
     loadPromoList();
 }
 
-function onError_highAccuracy(error) {
-    var msg = "";
-    //if(error.code == 2)
-        msg = 'No se pudo obtener datos del GPS. Se localizará por 3G, por lo que la localización puede presentar un desvío de 150 mts aproximadamente.';
-        // Attempt to get GPS loc timed out after 5 seconds, 
-        // try low accuracy location
-        if(navigator.notification == null)
-    	    showMessage(msg, 'GPS', 'OK');
-        navigator.geolocation.getCurrentPosition(
-                   onSuccess, 
-                   onError,
-                   {maximumAge:600000, timeout:10000, enableHighAccuracy: false});
-        return;
-    //}
+//CONFIG
+function getRegionsUpdate(){
+//Actualiza de ser necesario la lista de regiones en función de la version local.
+    var region_version = window.localStorage.getItem("region_version");    
+    //if(region_version == null)
+    region_version = 0;
+    $.ajax({
+        url: _baseServUri + 'getregions',
+        dataType: 'jsonp',
+        data: {"region_version": region_version},
+        jsonp: 'jsoncallback',
+        contentType: "application/json; charset=utf-8",
+        timeout: 5000,
+        beforeSend: function (jqXHR, settings) {
+            url = settings.url + "?" + settings.data;
+        },
+        success: function(data, status){
+                if(data == null)
+                    return;
+                addRegions(data.province, data.city, data.version);    
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            showMessage('Hubo un error actualizando las ciudades', 'Error', 'Ok');
+        }
+    });
+}    
+function addRegions(provinces, cities, version){
+    var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
+    db.transaction(function(tx){populateRegionsDB(tx, provinces, cities)}, errorCB, successCB(version));
 }
+function populateRegionsDB(tx, provinces, cities) {
+ tx.executeSql('DROP TABLE IF EXISTS province');
+ tx.executeSql('CREATE TABLE IF NOT EXISTS province (province_id INTEGER PRIMARY KEY, name)');
+ $.each(provinces, function(i,item){
+    tx.executeSql('INSERT INTO province (province_id, name) VALUES ('+item.province_id+',"'+item.name+'")');
+ });
+ tx.executeSql('DROP TABLE IF EXISTS city');
+ tx.executeSql('CREATE TABLE IF NOT EXISTS city (city_id INTEGER PRIMARY KEY, name, latitude, longitude, province_id INTEGER)');
+ $.each(cities, function(i,item){
+    tx.executeSql('INSERT INTO city (city_id, name, latitude, longitude, province_id) VALUES ('+item.city_id+',"'+item.name+'","'+item.latitude+'","'+item.longitude+'",'+item.province_id+')');
+ });
+}
+function errorCB(err) {
+    alert("Error procesando SQL: "+err.code);
+}
+function successCB(version) {
+    window.localStorage.setItem("region_version", version);
+}
+function gotoSearch(){
+    var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
+    db.transaction(populateProvinceDDL, errorProvinceDDL, successProvinceDDL);
+    $('#city_button').hide();
+    $.mobile.changePage($("#search"));        
+}
+function populateProvinceDDL(tx){
+    tx.executeSql('SELECT province_id, name FROM province', [], queryProvinceSuccess, errorCB);
+}
+function successProvinceDDL(){
+    
+}
+function errorProvinceDDL(err) {
+        console.log("Error Province SQL: "+err.code);
+    }
+function queryProvinceSuccess(tx, results){
+    for(i=0;i<results.rows.length;i++){
+        $('#state_select').append('<option value="'+results.rows.item(i).province_id+'">' + results.rows.item(i).name + '</option>');
+    }    
+}
+function addCites(province_id) {
+    var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
+    db.transaction(function(tx){populateCityDDL(tx, province_id)}, errorCityDDL, successCityDDL);
+}
+function populateCityDDL(tx, province_id){
+    tx.executeSql('SELECT city_id, name FROM city WHERE province_id = ' + province_id, [], queryCitySuccess, errorCB);
+}
+function successCityDDL(){
+    
+}
+function errorCityDDL(err) {
+        console.log("Error City SQL: "+err.code);
+    }
+function queryCitySuccess(tx, results){
+    $('#city_select').empty();
+    for(i=0;i<results.rows.length;i++){
+        $('#city_select').append('<option value="'+results.rows.item(i).city_id+'">' + results.rows.item(i).name + '</option>');
+    }
+    //$("#city_select").val("option:last");
+    $("#city_select option:first").attr('selected','selected');     
+    $('#city_select').selectmenu("refresh");
+    $('#city_button').show();
+}
+
+//SEARCH
+function doSearch(){
+    var city_id = $("#city_select option:selected").val();
+    if(city_id != null){
+        var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
+        db.transaction(function(tx){querySearchDB(tx, city_id)}, errorSearchDB);    
+    }
+    else{
+        showMessage("No hay ciudad seleccionada.", "Info", "Ok");
+    }
+}
+function querySearchDB(tx, city_id) {
+        tx.executeSql('SELECT * FROM city WHERE city_id = ' + city_id, [], querySearchSuccess, errorSearchDB);
+}
+function querySearchSuccess(tx, results) {
+    len = results.rows.length;
+    if(len = 1){
+        _lat = results.rows.item(0).latitude;
+        _lng = results.rows.item(0).longitude;
+        loadPromoList();
+        $.mobile.changePage($("#one"));
+    }
+}
+function errorSearchDB(err){
+    console.log("error en la búsqueda de promociones por ciudad: " + err.code);
+}
+
+
+
+$('#state_select').live("change blur", function() {
+    var selectedState = $(this).val();
+    var selectFirst = 0;
+    addCites(selectedState);
+
+    /*$("#city_select option").each(function() {
+        if ($(this).attr('id') != selectedState) {
+            $(this).remove();
+        } else {
+            if (selectFirst < 1) {
+                $(this).attr('id', selectedState).attr('selected', 'selected');
+            }
+            selectFirst++;
+        }
+    });*/
+    $("#city_select").parent().parent().show();
+
+    if ($('#city_select option').size() == 0) {
+        $('#city_select').append('<option value="nocity">No City Found</option>');
+    }
+});
+
+    

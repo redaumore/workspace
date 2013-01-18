@@ -5,8 +5,8 @@
 <title>Promos al paso</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript">
-    //var _baseUri = "http://promosalpaso.local/";
-    var _baseUri = "http://dev.promosalpaso.com/";
+    var _baseUri = "http://promosalpaso.local/";
+    //var _baseUri = "http://dev.promosalpaso.com/";
 </script> 
 <script src="scripts/jquery-1.8.2.min.js"></script>
 <script src="scripts/jquery.mobile-1.2.0.min.js"></script>
@@ -22,7 +22,7 @@
 </head>
 <body>
     <div data-role="page" id="one">
-        <div data-role="header" class="ui-header ui-bar-a" role="banner" data-position="fixed">
+        <div id="header" data-role="header" class="ui-header ui-bar-a" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
             	<div style="float: right; padding-top: 0.5em; padding-right: 0.5em; width: 75%;" data-role="navbar" class="ui-navbar ui-mini" role="navigation">
@@ -35,15 +35,15 @@
             </div>
         </div>
 
-        <div data-role="content">
-            <ul id="promolist" data-role="listview" class="ui-listview"></ul>    
+        <div data-role="content" class="scrollable">
+            <ul id="promolist" data-role="listview" class="ui-listview"></ul>
         </div>
         <div data-role="footer">
               
         </div>
     </div>
     <div data-role="page" id="detail">
-            <div data-role="header" class="ui-header ui-bar-a" role="banner" data-position="fixed">
+            <div data-role="header" class="ui-header ui-bar-a" role="banner">
 	            <div style="height: 5em;">
 	                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
 	            	<div style="float: right; padding-top: 0.5em; padding-right: 0.5em; width: 75%;" data-role="navbar" class="ui-navbar ui-mini" role="navigation">
@@ -119,28 +119,37 @@
             </div>
         </div>
     </div>
-    <div data-role="page" id="nopromos" data-theme="a">
-        <div data-role="header">
-            <div class="ui-controlgroup-controls">
-            <a href="index.html" data-role="button" data-icon="back" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Atrás" class="ui-btn ui-btn-inline ui-btn-icon-notext ui-corner-left ui-btn-up-b"><span class="ui-btn-inner ui-corner-left"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-back ui-icon-shadow">&nbsp;</span></span></a>
-            <a href="index.html" data-role="button" data-icon="refresh" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Refrescar" class="ui-btn ui-btn-inline ui-btn-icon-notext ui-btn-up-b"><span class="ui-btn-inner"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-refresh ui-icon-shadow">&nbsp;</span></span></a>
-            <a href="index.html" data-role="button" data-icon="search" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Buscar" class="ui-btn ui-btn-inline ui-btn-icon-notext ui-btn-up-b"><span class="ui-btn-inner"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-search ui-icon-shadow">&nbsp;</span></span></a>
-            <a href="index.html" data-role="button" data-icon="star" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Favoritos" class="ui-btn ui-btn-up-b ui-btn-inline ui-btn-icon-notext"><span class="ui-btn-inner"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>
-            <a href="index.html" data-role="button" data-icon="delete" data-iconpos="notext" data-theme="a" data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Salir" class="ui-btn ui-btn-up-b ui-btn-inline ui-btn-icon-notext ui-corner-right ui-controlgroup-last"><span class="ui-btn-inner ui-corner-right ui-controlgroup-last"><span class="ui-btn-text">My button</span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>
+    <div data-role="page" id="search" data-theme="a">
+        <div id="header" data-role="header" class="ui-header ui-bar-a" data-position="fixed">
+            <div style="height: 5em;">
+                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
+                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em; width: 75%;" data-role="navbar" class="ui-navbar ui-mini" role="navigation">
+                    <ul class="ui-grid-b">
+                        <li class="ui-block-a"><a href="#" onclick="refreshPromoList();" data-icon="refresh" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-active ui-btn-up-a"></a></li>
+                        <li class="ui-block-b"><a href="#" onclick="gotoSearch();" data-icon="search" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
+                        <li class="ui-block-c"><a href="#" onclick="gotoFavoritos();" data-icon="star" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
+                    </ul>
+                </div>    
             </div>
-        </div><!-- /header -->
+        </div>
 
-        <div data-role="content" data-theme="a">    
-            <h2>No se encontraron promociones.</h2>
-            <p>La búsqueda por localización no ha encontrado ninguna promoción cerca tuyo (4 km a la redonda).</p>    
-            <p>Prueba hacer una búsqueda especificando una dirección y/o localidad.</p>    
-            <p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Buscar por dirección</a></p>    
+        <div data-role="content">
+            <h2>Busqueda por Localidad</h2>
+            <div class="ui-select">
+                <select name="state_select" id="state_select">
+                    <option value="">Seleccioná una provincia</option>
+                </select>
+            </div>
+            <div id="city_button" style="text-align: center;">
+                <div class="ui-select">
+                    <select name="city_select" id="city_select"></select>
+                </div>
+                <div id="search_button">
+                    <a href="#" onclick="doSearch();" data-role="button" data-inline="true">Buscar</a>
+                </div>
+            </div>
             
-        </div><!-- /content -->
-        
-        <div data-role="footer">
-            <h4>Page Footer</h4>
-        </div><!-- /footer -->
+        </div>
     </div><!-- /page two -->
 </body>
 </HTML>
