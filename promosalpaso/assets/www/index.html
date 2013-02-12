@@ -5,10 +5,10 @@
 <title>Promos al paso</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript">
-    //var _baseUri = "http://192.168.1.35/";
-    var _baseUri = "http://dev.promosalpaso.com/";
+    var _baseUri = "http://192.168.1.36/";
+    //var _baseUri = "http://dev.promosalpaso.com/";
 </script>
-<!-- <script src="http://debug.phonegap.com/target/target-script-min.js#promosalpaso1"></script> -->
+<script src="http://debug.phonegap.com/target/target-script-min.js#promosalpaso1"></script>
 <script src="scripts/jquery-1.8.2.min.js"></script>
 <script src="scripts/jquery.mobile-1.2.0.min.js"></script>
 <script src="scripts/cordova-2.2.0.js"></script>
@@ -22,17 +22,31 @@
 <link href="css/pap.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <div data-role="page" id="one">
-        <div id="header" data-role="header" class="ui-header ui-bar-a" data-position="fixed">
+	<div data-role="page" id="main">
+		<div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
-            	<div style="float: right; padding-top: 0.5em; padding-right: 0.5em; width: 75%;" data-role="navbar" class="ui-navbar ui-mini" role="navigation">
-	                <ul class="ui-grid-b">
-	                    <li class="ui-block-a"><a href="#" onclick="refreshPromoList();" data-icon="refresh" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-active ui-btn-up-a"></a></li>
-	                    <li class="ui-block-b"><a href="#" onclick="gotoSearch();" data-icon="search" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
-	                    <li class="ui-block-c"><a href="#" onclick="gotoFavoritos();" data-icon="star" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
-	                </ul>
+            	<div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
+	                <a href="#main"><img style="height: 4em;" src="images/menu-icon.png"/></a>
             	</div>    
+            </div>
+        </div>
+        <div data-role="content">
+        	<div data-role="controlgroup">
+				<a href="#" onclick="refreshPromoList();" data-role="button" data-icon="refresh" data-shadow="true">Todas las Promos</a>
+				<a href="#" onclick="gotoSearch();" data-role="button" data-icon="search">Buscar</a>
+				<a href="#" onclick="gotoFavoritos();" data-role="button" data-icon="star">Mis Favoritas</a>
+				<a href="#contacto" data-role="button">Contacto</a>
+			</div>
+        </div>
+	</div>
+    <div data-role="page" id="one">
+        <div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+            <div style="height: 5em;">
+                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
+                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
+                    <a href="#main"><img style="height: 4em;" src="images/menu-icon.png"/></a>
+                </div>    
             </div>
         </div>
 
@@ -41,18 +55,14 @@
         </div>
     </div>
     <div data-role="page" id="detail">
-            <div data-role="header" class="ui-header ui-bar-a" role="banner">
-	            <div style="height: 5em;">
-	                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
-	            	<div style="float: right; padding-top: 0.5em; padding-right: 0.5em; width: 75%;" data-role="navbar" class="ui-navbar ui-mini" role="navigation">
-		                <ul class="ui-grid-b">
-		                    <li class="ui-block-a"><a href="#" onclick="refreshPromoList();" data-icon="refresh" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-active ui-btn-up-a"></a></li>
-		                    <li class="ui-block-b"><a href="#" onclick="gotoSearch();" data-icon="search" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
-		                    <li class="ui-block-c"><a href="#" onclick="gotoFavoritos();" data-icon="star" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
-		                </ul>
-	            	</div>    
-	            </div>
-        </div><!-- /header -->
+        <div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+            <div style="height: 5em;">
+                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
+                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
+                    <a href="#main"><img style="height: 4em;" src="images/menu-icon.png"/></a>
+                </div>    
+            </div>
+        </div>
         <div data-role="content" style="padding: 0px;" >
             <div style="border-bottom: solid 1px #9CAAC6; width: 100%;">
                 <div style="float: left;"><img id="det-img-comercio" src="images/trebol.png" style="width: 3.5em; height: 3.5em; padding: 3px;"/></div>
@@ -86,9 +96,9 @@
                     </a>
                 </div>
                 <div style="float: right; padding: 3px 3px 0 0;">
-                    <div id="det-web"><a id="det-link" href="www.clarin.com" target="new"><img src="images/web-icon.png"/></a></div>
-                    <div id="det-tel"><a id="det-phone" href="#" onclick="makeacall();" ><img src="images/phone-icon.png"/></a></div>
-                    <div id="det-email"><a id="det-msg" href="#" onclick="sendmessage();" ><img src="images/mail-icon.png"/></a></div>
+                    <div id="det-web"><a id="det-link" href="" target="new"><img src="images/web-icon.png"/></a></div>
+                    <div id="det-tel"><a id="det-phone" href="#"><img src="images/phone-icon.png"/></a></div>
+                    <div id="det-email"><a id="det-msg" href="#"><img src="images/mail-icon.png"/></a></div>
                 </div>
                 <div style="height: 75px; margin-left: 145px; margin-right: 25px;">
                     <div style="height: 100%; width: 100%; vertical-align: center; text-align: center;">
@@ -110,6 +120,14 @@
         </div>
     </div>    
     <div data-role="page" id="page-map">
+    	<div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+            <div style="height: 5em;">
+                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
+                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
+                    <a href="#main"><img style="height: 4em;" src="images/menu-icon.png"/></a>
+                </div>    
+            </div>
+        </div>
         <div data-role="content" style="padding:0;">
             <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
                 <div id="map_canvas" style="float:left; width:600px; height:400px; position: relative;"></div>
@@ -118,19 +136,14 @@
         </div>
     </div>
     <div data-role="page" id="search" data-theme="a">
-        <div id="header" data-role="header" class="ui-header ui-bar-a" data-position="fixed">
+        <div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
-                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em; width: 75%;" data-role="navbar" class="ui-navbar ui-mini" role="navigation">
-                    <ul class="ui-grid-b">
-                        <li class="ui-block-a"><a href="#" onclick="refreshPromoList();" data-icon="refresh" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-active ui-btn-up-a"></a></li>
-                        <li class="ui-block-b"><a href="#" onclick="gotoSearch();" data-icon="search" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
-                        <li class="ui-block-c"><a href="#" onclick="gotoFavoritos();" data-icon="star" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-inline="true" class="ui-btn ui-btn-inline ui-btn-up-a"></a></li>
-                    </ul>
+                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
+                    <a href="#main"><img style="height: 4em;" src="images/menu-icon.png"/></a>
                 </div>    
             </div>
         </div>
-
         <div data-role="content">
             <h2>Busqueda por Localidad</h2>
             <select name="state_select" id="state_select"></select>
