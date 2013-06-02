@@ -4,11 +4,8 @@
 <meta charset="utf-8">
 <title>Promos al paso</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="text/javascript">
-    var _baseUri = "http://192.168.1.36/";
-    //var _baseUri = "http://dev.promosalpaso.com/";
-</script>
 <script src="http://debug.phonegap.com/target/target-script-min.js#promosalpaso1"></script>
+<script src="scripts/environment.js"></script>
 <script src="scripts/jquery-1.8.2.min.js"></script>
 <script src="scripts/jquery.mobile-1.2.0.min.js"></script>
 <script src="scripts/cordova-2.2.0.js"></script>
@@ -23,7 +20,7 @@
 </head>
 <body>
 	<div data-role="page" id="main">
-		<div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+		<div id="headermain" data-role="header" class="ui-header ui-header-fixed" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
             	<div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
@@ -31,7 +28,7 @@
             	</div>    
             </div>
         </div>
-        <div data-role="content">
+        <div data-role="content" class="scrollable">
         	<div data-role="controlgroup">
 				<a href="#" onclick="refreshPromoList();" data-role="button" data-icon="refresh" data-shadow="true">Todas las Promos</a>
 				<a href="#" onclick="gotoSearch();" data-role="button" data-icon="search">Buscar</a>
@@ -41,7 +38,7 @@
         </div>
 	</div>
     <div data-role="page" id="one">
-        <div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+        <div id="headerone" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
                 <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
@@ -55,7 +52,7 @@
         </div>
     </div>
     <div data-role="page" id="detail">
-        <div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+        <div id="headerdetail" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
                 <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
@@ -63,7 +60,7 @@
                 </div>    
             </div>
         </div>
-        <div data-role="content" style="padding: 0px;" >
+        <div data-role="content" style="padding: 0px;" class="scrollable">
             <div style="border-bottom: solid 1px #9CAAC6; width: 100%;">
                 <div style="float: left;"><img id="det-img-comercio" src="images/trebol.png" style="width: 3.5em; height: 3.5em; padding: 3px;"/></div>
                 <div id="det-name" class="det-comercio" style="width: 100%; text-align: center; margin-left: 2.5em;">Nombre Comercio</div>
@@ -115,12 +112,12 @@
             </div>
            <div id="maspromos" style="width: 100%; height: 3em;">
                 <div class="ui-bar-a" style="height: 1.6em; color: white; font-size: 1.2em; padding: 0.4em 0 0.4em 0; text-shadow: 0 0 0;"><span id="barmaspromos" style="padding-left: 5px;">+ promos de #NOMBRECOMERCIO#</span></div>
-                <ul id="promolist" data-role="listview" class="ui-listview"></ul>     
+                <ul id="promolistmp" data-role="listview" class="ui-listview"></ul>     
            </div>
         </div>
     </div>    
     <div data-role="page" id="page-map">
-    	<div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+    	<div id="headermap" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
                 <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
@@ -128,7 +125,7 @@
                 </div>    
             </div>
         </div>
-        <div data-role="content" style="padding:0;">
+        <div data-role="content" style="padding:0;" class="scrollable">
             <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
                 <div id="map_canvas" style="float:left; width:600px; height:400px; position: relative;"></div>
                 <div id="directionsPanel" style="float:right;width:20%;height:100%"></div>
@@ -136,7 +133,7 @@
         </div>
     </div>
     <div data-role="page" id="search" data-theme="a">
-        <div id="header" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
+        <div id="headersearch" data-role="header" class="ui-header ui-header-fixed ui-bar-a" data-position="fixed">
             <div style="height: 5em;">
                 <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
                 <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
@@ -144,7 +141,7 @@
                 </div>    
             </div>
         </div>
-        <div data-role="content">
+        <div data-role="content" class="scrollable">
             <h2>Busqueda por Localidad</h2>
             <select name="state_select" id="state_select"></select>
             <div id="city_button" style="text-align: center;">
