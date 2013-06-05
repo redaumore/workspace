@@ -30,26 +30,6 @@ var _firstAttempFav = true;
 var _inFavorites = false;
 var _last_update;
 
-$(document).ready(function(){
-	if(jQuery.browser.mobile){
-        $.mobile.defaultPageTransition = 'none';
-        _last_update = window.localStorage.getItem("last_update");    
-        if(_last_update == null)
-            setLastUpdate(new Date(0));
-        console.log("Ultima actualización: "+_last_update);    
-        console.log("Actualizando ciudades...");
-        getRegionsUpdate();
-        navigator.geolocation.getCurrentPosition(onSuccess, 
-    		    onError_highAccuracy, 
-    		    {maximumAge:600000, timeout:5000, enableHighAccuracy: true});
-        setLastUpdate(new Date());
-    }
-});
-
-$(document).bind("mobileinit", function(){
-	$.mobile.defaultPageTransition = 'none';
-});
-
 function refreshPromoList(){
 	if(_lat == null || _lng == null){
 		showMessage('No se encontraron promos. Intenta nuestra búsqueda manual.', 'Info', 'Ok');
@@ -82,7 +62,7 @@ function loadPromoList(){
                "lng": _lng},
         jsonp: 'jsoncallback',
         contentType: "application/json; charset=utf-8",
-        timeout: 5000,
+        timeout: 10000,
         beforeSend: function (jqXHR, settings) {
             console.log(settings.url);
         },
@@ -104,18 +84,18 @@ function loadPromoList(){
                 $.each(data, function(i,item){
                     promolist += getPromoRecord(item);
                 });
-                $("#promolist").html(promolist);
-                $.mobile.changePage($("#one"));
+                jQuery("#promolist").html(promolist);
+                $.mobile.changePage(jQuery("#one"));
                 $.mobile.hidePageLoadingMsg();
         },
         error: function(jqXHR, textStatus, errorThrown){
             if(_firstAttemp){
                 _firstAttemp = false;
-                console.log("LoadPromoList-1: ".textStatus);
+                console.log("LoadPromoList-1: ".jqXHR.responseText);
                 loadPromoList();
             }
             else{
-            	console.log("LoadPromoList-2: ".textStatus);
+            	console.log("LoadPromoList-2: ".jqXHR.responseText);
 	            showMessage('Hubo un error recuperando las promociones. Por favor intentalo más tarde...', 'Error', 'Ok');
 	            $.mobile.hidePageLoadingMsg();
             }
@@ -132,13 +112,13 @@ function loadPromoListByIds(ids){
                "lng": _lng},
         jsonp: 'jsoncallback',
         contentType: "application/json; charset=utf-8",
-        timeout: 5000,
+        timeout: 10000,
         beforeSend: function (jqXHR, settings) {
             url = settings.url + "?" + settings.data;
         },
         success: function(data, status){
                 if(data.length == 0)
-                    $.mobile.changePage($("#nopromos"));
+                    $.mobile.changePage(jQuery("#nopromos"));
                 document.getElementById("promolist").innerHTML = "";                        
                 $.each(data, function(i,item){
                     document.getElementById("promolist").innerHTML += getPromoRecord(item);
@@ -178,7 +158,7 @@ function gotoPromo(id_promotion){
     callPromoDetail(id_promotion);
 }
 
-function getParamByName(url, paramName){ 
+function getPamarByName(url, paramName){ 
     var strGET = url.substr(url.indexOf('?')+1,url.length - url.indexOf('?')); 
     var arrGET = strGET.split("&"); 
     var paramValue = '';
@@ -201,14 +181,14 @@ function callPromoDetail(promotion_id){
                "promoid": promotion_id},
         jsonp: 'jsoncallback',
         contentType: "application/json; charset=utf-8",
-        timeout: 5000,
+        timeout: 10000,
         beforeSend: function (jqXHR, settings) {
             url = settings.url + "?" + settings.data;
         },
         success: function(data, status){
                 loadPromoDetail(data);
                 $.mobile.hidePageLoadingMsg();
-                $.mobile.changePage($("#detail"));
+                $.mobile.changePage(jQuery("#detail"));
         },
         error: function(jqXHR, textStatus, errorThrown){
             showMessage(
@@ -223,64 +203,64 @@ function callPromoDetail(promotion_id){
 }
 
 function loadPromoDetail(item){
-    $("#det-name").html(item.name);
-    $("#det-long_description").html(item.long_description);
-    $("#det-displayed_text").html(item.displayed_text);
-    $("#det-short_description").html(item.short_description);
-    $("#det-promo_value").html(formatPrice(item.promo_value));
-    $("#det-distance").html(item.distance);
-    $("#det-direccion").html(item.street + ' ' + item.number + ' - ' + item.city);
-    $("#det-img-comercio").attr("src",item.logo);
+    jQuery("#det-name").html(item.name);
+    jQuery("#det-long_description").html(item.long_description);
+    jQuery("#det-displayed_text").html(item.displayed_text);
+    jQuery("#det-short_description").html(item.short_description);
+    jQuery("#det-promo_value").html(formatPrice(item.promo_value));
+    jQuery("#det-distance").html(item.distance);
+    jQuery("#det-direccion").html(item.street + ' ' + item.number + ' - ' + item.city);
+    jQuery("#det-img-comercio").attr("src",item.logo);
     if(item.branch_website != null && item.branch_website != "" )
-        $("#det-link").attr("href", item.website);
+        jQuery("#det-link").attr("href", item.website);
     else
-        $("#det-web").hide();
+        jQuery("#det-web").hide();
     
     if(item.phone != null && item.phone != "")
-        $("#det-phone").attr("onclick", "makeacall('"+item.phone+"')");
+        jQuery("#det-phone").attr("onclick", "makeacall('"+item.phone+"')");
     else
-        $("#det-tel").hide();
+        jQuery("#det-tel").hide();
     
     if(item.branch_email != null && item.branch_email != "")
-        $("#det-msg").attr("onclick", "sendamessage('"+item.branch_email+"')");
+        jQuery("#det-msg").attr("onclick", "sendamessage('"+item.branch_email+"')");
     else
-        $("#det-email").hide();
+        jQuery("#det-email").hide();
     
     if(item.path != "NOPIC")
-    	$("#det-img-promo").attr("src",item.path);
+    	jQuery("#det-img-promo").attr("src",item.path);
     else
-    	$("#det-img-promo").attr("src","images/photo_error.png");
+    	jQuery("#det-img-promo").attr("src","images/photo_error.png");
     
     if(item.alert_type == "N"){
-        $("#det-alarma").hide();
+        jQuery("#det-alarma").hide();
     }
     else{
         if(item.alert_type == "Q"){
-            $("#det-alarm_num").html(item.quantity);
-            $("#det-alarm_type").html("unids");
+            jQuery("#det-alarm_num").html(item.quantity);
+            jQuery("#det-alarm_type").html("unids");
         }
         else{
             today=new Date();
             ends = new Date(item.ends);
             var one_day = 1000*60*60*24;
             days = Math.ceil((ends.getTime()-today.getTime())/(one_day));
-            $("#det-alarm_num").html(days);
-            $("#det-alarm_type").html("días");
+            jQuery("#det-alarm_num").html(days);
+            jQuery("#det-alarm_type").html("días");
         } 
     }
     if(item.value_since == "1")
-        $("#precio_desde").show();
+        jQuery("#precio_desde").show();
     else
-        $("#precio_desde").hide();
+        jQuery("#precio_desde").hide();
     if(isFavorite(item.promotion_id)){
-        $("#favtext").html("Quitar de Favoritos");
-        $("#linkFavorite").unbind("click");
-        $("#linkFavorite").click(function(){deleteFavorite(item.promotion_id);});
+        jQuery("#favtext").html("Quitar de Favoritos");
+        jQuery("#linkFavorite").unbind("click");
+        jQuery("#linkFavorite").click(function(){deleteFavorite(item.promotion_id);});
     }
     else{
-        $("#favtext").html("Agregar a Favoritos");
-        $("#linkFavorite").unbind("click");
-        $("#linkFavorite").click(function(){saveFavorite();});
+        jQuery("#favtext").html("Agregar a Favoritos");
+        jQuery("#linkFavorite").unbind("click");
+        jQuery("#linkFavorite").click(function(){saveFavorite();});
     }
     _promo_lat = item.latitude;
     _promo_lng = item.longitude;
@@ -345,40 +325,24 @@ function gotoFavoritos(){
     showMessage('No tienes favoritos.', 'Info', 'Ok');        
 }
 
-function showMessage(message, title, button){
-	$.mobile.showPageLoadingMsg('a', message, true);
-	setTimeout( function() { $.mobile.hidePageLoadingMsg(); }, 3000 );
-    /*
-	if(navigator.notification == null)
-        alert(message);
-    else
-        navigator.notification.alert(message, null, title, button);
-    */        
-}
 // Function called when phonegap is ready
 function setFullScreen() {
     //All pages at least 100% of viewport height
-    var viewPortHeight = $(window).height();
-    var headerHeight = $('div[data-role="header"]').height();
-    var footerHeight = $('div[data-role="footer"]').height();
+    var viewPortHeight = jQuery(window).height();
+    var headerHeight = jQuery('div[data-role="header"]').height();
+    var footerHeight = jQuery('div[data-role="footer"]').height();
     var contentHeight = viewPortHeight - headerHeight - footerHeight;
 
     // Set all pages with class="page-content" to be at least contentHeight
-    $('div[class="ui-content"]').css({'min-height': contentHeight + 'px'});
+    jQuery('div[class="ui-content"]').css({'min-height': contentHeight + 'px'});
  }
  
 function showProgress() {
-    $('body').append('<div id="progress"><img src="/css/images/ajax-loader.gif" alt="" width="16" height="11" /> Loading...</div>');
-    $('#progress').center();
+    jQuery('body').append('<div id="progress"><img src="/css/images/ajax-loader.gif" alt="" width="16" height="11" /> Loading...</div>');
+    jQuery('#progress').center();
 }
 function hideProgress() {
-    $('#progress').remove();
-}
-jQuery.fn.center = function () {
-    this.css("position", "absolute");
-    this.css("top", ($(window).height() - this.height()) / 2 + $(window).scrollTop() + "px");
-    this.css("left", ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + "px");
-    return this;
+    jQuery('#progress').remove();
 }
 
 function getLiString(){
@@ -470,7 +434,7 @@ function getRegionsUpdate(){
         data: {"lastupdate": _last_update},
         jsonp: 'jsoncallback',
         contentType: "application/json; charset=utf-8",
-        timeout: 5000,
+        timeout: 10000,
         beforeSend: function (jqXHR, settings) {
             console.log(settings.url);
         },
@@ -521,8 +485,8 @@ function successCB(){
 function gotoSearch(){
     var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
     db.transaction(populateProvinceDDL, errorProvinceDDL, successProvinceDDL);
-    $('#city_button').hide();
-    $.mobile.changePage($("#search"));        
+    jQuery('#city_button').hide();
+    $.mobile.changePage(jQuery("#search"));        
 }
 function populateProvinceDDL(tx){
     tx.executeSql('SELECT province_id, name FROM province ORDER BY name', [], queryProvinceSuccess, errorCB);
@@ -534,13 +498,13 @@ function errorProvinceDDL(err) {
         console.log("errorProvinceDDL: "+err.message+". Code: "+err.code);
     }
 function queryProvinceSuccess(tx, results){
-    $('#state_select').empty();
+    jQuery('#state_select').empty();
     for(i=0;i<results.rows.length;i++){
-        $('#state_select').append('<option value="'+results.rows.item(i).province_id+'">' + results.rows.item(i).name + '</option>');
+        jQuery('#state_select').append('<option value="'+results.rows.item(i).province_id+'">' + results.rows.item(i).name + '</option>');
     }
-    $("#state_select option:first").attr('selected','selected');
-    $('#state_select').selectmenu("refresh");
-    addCites($('#state_select').val());
+    jQuery("#state_select option:first").attr('selected','selected');
+    jQuery('#state_select').selectmenu("refresh");
+    addCites(jQuery('#state_select').val());
 }
 function addCites(province_id) {
     var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
@@ -556,20 +520,20 @@ function errorCityDDL(err) {
         console.log("Error City SQL: "+err.code);
     }
 function queryCitySuccess(tx, results){
-    $('#city_select').empty();
+    jQuery('#city_select').empty();
     for(i=0;i<results.rows.length;i++){
-        $('#city_select').append('<option value="'+results.rows.item(i).city_id+'">' + results.rows.item(i).name + '</option>');
+        jQuery('#city_select').append('<option value="'+results.rows.item(i).city_id+'">' + results.rows.item(i).name + '</option>');
     }
-    $("#city_select option:first").attr('selected','selected');     
-    $('#city_select').selectmenu("refresh");
-    $('#city_button').show();
+    jQuery("#city_select option:first").attr('selected','selected');     
+    jQuery('#city_select').selectmenu("refresh");
+    jQuery('#city_button').show();
 }
 
 //SEARCH
 function doSearch(){
-    var city_id = $("#city_select option:selected").val();
+    var city_id = jQuery("#city_select option:selected").val();
     if(city_id != null){
-        $("#promolist").html("");
+        jQuery("#promolist").html("");
         var db = window.openDatabase("promosalpaso", "1.0", "Promos al Paso", 200000);
         db.transaction(function(tx){querySearchDB(tx, city_id)}, errorSearchDB);    
     }
@@ -586,7 +550,7 @@ function querySearchSuccess(tx, results) {
         _lat = results.rows.item(0).latitude;
         _lng = results.rows.item(0).longitude;
         loadPromoList();
-        $.mobile.changePage($("#one"));
+        $.mobile.changePage(jQuery("#one"));
     }
 }
 function errorSearchDB(err){
@@ -595,28 +559,3 @@ function errorSearchDB(err){
 
 
 
-$('#state_select').live("change blur", function() {
-    var selectedState = $(this).val();
-    addCites(selectedState);
-    if ($('#city_select option').size() == 0) {
-        $('#city_select').append('<option value="nocity">No se encontraron ciudades</option>');
-    }
-    event.preventDefault();
-});
-
-$('#a_search_button').live("click", function() {
-    event.preventDefault();
-    doSearch();
-});
-
-$(document).delegate( "#page-map", "pagebeforeshow", function(event){
-    initialize();
-    var _width = $(window).width();
-    var _height = $(window).height();
-    $("#map_canvas").css({height:_height});
-    $("#map_canvas").css({width:_width});
-    calcRoute();
-});
-
-(function(a){jQuery.browser.mobile=/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|e\-|e\/|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))})(navigator.userAgent||navigator.vendor||window.opera);
-    
