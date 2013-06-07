@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Promos al paso</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--<script src="http://debug.phonegap.com/target/target-script-min.js#promosalpaso1"></script>-->
+<script src="scripts/environment.js"></script>
+<script src="scripts/jquery-1.10.1.min.js"></script>
+<script src="scripts/jquery.mobile-1.3.1.min.js"></script>
+<!--<script src="scripts/cordova-2.2.0.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>-->
+<script src="scripts/route-maps.js"></script>
+<script src="scripts/promosalpaso.js"></script>
+<script src="scripts/promosalpaso-mobile.js"></script>
+<link href="css/jquery.mobile.structure-1.3.1.css" rel="stylesheet" type="text/css"/>
+<link href="css/pap_styles.css" rel="stylesheet" type="text/css"/>
+<link href="css/pap.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div data-role="page" id="one" data-theme="a">
+        <div id="headerone" data-role="header" class="ui-header ui-header-fixed" data-position="fixed">
+            <div style="height: 5em;">
+                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
+                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
+                    <a href="#main"><img style="height: 4em;" src="images/menu-icon.png"/></a>
+                </div>    
+            </div>
+        </div>
+
+        <div data-role="content" class="scrollable">
+            <ul id="promolist" data-role="listview" data-inset="false">
+                <li data-corners="false" data-shadow="false" data-wrapperels="div" data-icon="false" style="padding: 0px; background-image: none;">
+                   <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                       <table class="aviso">
+                          <tr>
+                             <td class="image" style="width: 50px;">
+                                <img src="./images/logo_1.jpg" class="shadow image">
+                             </td>
+                             <td style="border-right: solid 1px #9CAAC6;">
+                                <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                             </td>
+                             <td style="width: 30px;">
+                                <div style="text-align: center;">
+                                    <div class="desde" style="display: block;">desde</div>
+                                    <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                    <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                </div>
+                             </td>
+                             <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                          </tr>
+                       </table>
+                    </a>
+                </li>
+                <li data-corners="false" data-shadow="false" data-wrapperels="div" data-icon="false" style="padding: 0px; background-image: none;">
+                  <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                       <div class="row-fluid aviso">
+                            <div class="span2">
+                                <img src="./images/logo_1.jpg" class="shadow image" style="width: 50px;">
+                            </div>
+                            <div class="span8">
+                                <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                            </div>
+                            <div class="span2" style="text-align: center;">
+                                <div class="desde" style="display: block;">desde</div>
+                                <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                <span class="arrow-r ui-icon-shadow"></span>
+                            </div>
+                       </div>
+                    </a>
+                </li>
+                <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" style="padding: 0px;">
+                   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-a" style="padding: 0px; background-image: none;">
+                       <div class="ui-btn-text registro">
+                           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                               <table class="aviso">
+                                  <tr>
+                                     <td class="image" style="width: 50px;">
+                                        <img src="./images/logo_1.jpg" class="shadow image">
+                                     </td>
+                                     <td style="border-right: solid 1px #9CAAC6;">
+                                        <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                        <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                        <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                                     </td>
+                                     <td style="width: 30px;">
+                                        <div style="text-align: center;">
+                                            <div class="desde" style="display: block;">desde</div>
+                                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                            <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                        </div>
+                                     </td>
+                                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                                  </tr>
+                               </table>
+                            </a></div></div>
+                </li>
+                <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" style="padding: 0px;">
+                   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-a" style="padding: 0px; background-image: none;">
+                       <div class="ui-btn-text registro">
+                           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                               <table class="aviso">
+                                  <tr>
+                                     <td class="image" style="width: 50px;">
+                                        <img src="./images/logo_1.jpg" class="shadow image">
+                                     </td>
+                                     <td style="border-right: solid 1px #9CAAC6;">
+                                        <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                        <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                        <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                                     </td>
+                                     <td style="width: 30px;">
+                                        <div style="text-align: center;">
+                                            <div class="desde" style="display: block;">desde</div>
+                                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                            <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                        </div>
+                                     </td>
+                                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                                  </tr>
+                               </table>
+                            </a></div></div>
+                </li>
+                <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" style="padding: 0px;">
+                   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-a" style="padding: 0px; background-image: none;">
+                       <div class="ui-btn-text registro">
+                           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                               <table class="aviso">
+                                  <tr>
+                                     <td class="image" style="width: 50px;">
+                                        <img src="./images/logo_1.jpg" class="shadow image">
+                                     </td>
+                                     <td style="border-right: solid 1px #9CAAC6;">
+                                        <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                        <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                        <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                                     </td>
+                                     <td style="width: 30px;">
+                                        <div style="text-align: center;">
+                                            <div class="desde" style="display: block;">desde</div>
+                                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                            <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                        </div>
+                                     </td>
+                                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                                  </tr>
+                               </table>
+                            </a></div></div>
+                </li>
+                <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" style="padding: 0px;">
+                   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-a" style="padding: 0px;">
+                       <div class="ui-btn-text registro">
+                           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                               <table class="aviso">
+                                  <tr>
+                                     <td class="image" style="width: 50px;">
+                                        <img src="./images/logo_1.jpg" class="shadow image">
+                                     </td>
+                                     <td style="border-right: solid 1px #9CAAC6;">
+                                        <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                        <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                        <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                                     </td>
+                                     <td style="width: 30px;">
+                                        <div style="text-align: center;">
+                                            <div class="desde" style="display: block;">desde</div>
+                                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                            <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                        </div>
+                                     </td>
+                                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                                  </tr>
+                               </table>
+                            </a></div></div>
+                </li>
+                <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" style="padding: 0px;">
+                   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-a" style="padding: 0px;">
+                       <div class="ui-btn-text registro">
+                           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                               <table class="aviso">
+                                  <tr>
+                                     <td class="image" style="width: 50px;">
+                                        <img src="./images/logo_1.jpg" class="shadow image">
+                                     </td>
+                                     <td style="border-right: solid 1px #9CAAC6;">
+                                        <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                        <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                        <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                                     </td>
+                                     <td style="width: 30px;">
+                                        <div style="text-align: center;">
+                                            <div class="desde" style="display: block;">desde</div>
+                                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                            <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                        </div>
+                                     </td>
+                                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                                  </tr>
+                               </table>
+                            </a></div></div>
+                </li>
+                <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" style="padding: 0px;">
+                   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-a" style="padding: 0px;">
+                       <div class="ui-btn-text registro">
+                           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                               <table class="aviso">
+                                  <tr>
+                                     <td class="image" style="width: 50px;">
+                                        <img src="./images/logo_1.jpg" class="shadow image">
+                                     </td>
+                                     <td style="border-right: solid 1px #9CAAC6;">
+                                        <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                        <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                        <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                                     </td>
+                                     <td style="width: 30px;">
+                                        <div style="text-align: center;">
+                                            <div class="desde" style="display: block;">desde</div>
+                                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                            <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                        </div>
+                                     </td>
+                                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                                  </tr>
+                               </table>
+                            </a></div></div>
+                </li>
+                <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" style="padding: 0px;">
+                   <div class="ui-btn-inner ui-li ui-li-static ui-btn-up-a" style="padding: 0px;">
+                       <div class="ui-btn-text registro">
+                           <a href="#" data-transition="slide" onclick="gotoPromo(#ID#);"> <!--<a href="#ID#">-->
+                               <table class="aviso">
+                                  <tr>
+                                     <td class="image" style="width: 50px;">
+                                        <img src="./images/logo_1.jpg" class="shadow image">
+                                     </td>
+                                     <td style="border-right: solid 1px #9CAAC6;">
+                                        <p class="comercio ui-li-desc">Las cosas por su nombre</p>
+                                        <p class="descripcion ui-li-desc">Las mejores tiendas de ropa sucia</p>
+                                        <p class="promo ui-li-desc">20% de descuento en todas las compras</p>
+                                     </td>
+                                     <td style="width: 30px;">
+                                        <div style="text-align: center;">
+                                            <div class="desde" style="display: block;">desde</div>
+                                            <div style="border-bottom: solid 1px #9CAAC6;"><span class="precio">30<sup>30</sup></span></div>
+                                            <div style="vertical-align: middle; text-align: center"><span class="distancia">400</span></div>
+                                        </div>
+                                     </td>
+                                     <td class="arrow-r ui-icon-shadow">&nbsp;</td>
+                                  </tr>
+                               </table>
+                            </a></div></div>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
