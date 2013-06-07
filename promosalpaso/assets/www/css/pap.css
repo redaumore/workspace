@@ -8,11 +8,11 @@ body{ font-size: .5em; }
 .registro a:link{text-decoration: none;}
 
 .comercio{
-    font-weight: bold;
+    font-weight: bolder;
     padding-left: 4px;
     padding-top: 4px;
     text-align: center;
-    font-size: 1em;
+    font-size: 1.2em;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     white-space:pre-wrap;
 }
@@ -126,7 +126,7 @@ span>sup{
 }
 
 .scrollable {
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     -webkit-overflow-scrolling: touch;
 }
 
@@ -938,5 +938,6 @@ span>sup{
   background-position: -456px -144px;
 }
 
-
+ul li:nth-child(odd) { background-color:#eee; }
+ul li:nth-child(even) { background-color:#fff; }
 

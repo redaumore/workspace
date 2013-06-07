@@ -458,7 +458,6 @@ function addRegions(provinces, cities){
 }
 function populateRegionsDB(tx, provinces, cities) {
     if(provinces != null ){
-         tx.executeSql('DROP TABLE IF EXISTS province');
          tx.executeSql('CREATE TABLE IF NOT EXISTS province (province_id INTEGER PRIMARY KEY, name, updated DATETIME)');
          $.each(provinces, function(i,item){
             console.log("populateRegionsDB: actualizando provincia "+item.name);
@@ -466,7 +465,6 @@ function populateRegionsDB(tx, provinces, cities) {
          });
      }
      if(cities != null){
-         tx.executeSql('DROP TABLE IF EXISTS city');
          tx.executeSql('CREATE TABLE IF NOT EXISTS city (city_id INTEGER PRIMARY KEY, name, latitude, longitude, province_id INTEGER, updated DATETIME)');
          $.each(cities, function(i,item){
             console.log("populateRegionsDB: actualizando ciudad "+item.name);
