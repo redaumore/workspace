@@ -18,38 +18,25 @@
 <link href="css/pap.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <div data-role="page" id="main">
-        <div id="headermain" data-role="header" class="ui-header ui-header-fixed" data-position="fixed">
-            <div style="height: 5em;">
-                <div style="float: left; padding-top: 0.5em; padding-left: 0.5em;"><img src="images/logo-promosalpaso70.png" style="height: 4em;" /></div>
-                <div style="float: right; padding-top: 0.5em; padding-right: 0.5em;">
-                    <a href="#main"><img style="height: 4em;" src="images/menu-icon.png"/></a>
-                </div>    
-            </div>
-        </div>
-        <div data-role="content" class="scrollable">
-            <div class="row-fluid">
-                <div class="span10 offset1 pagination-centered">
-                    <p>Bienvenido a Promos al Paso!</p>
-                </div>
-            </div>
+    <div data-role="page" id="main" data-theme="a">
+        <div data-role="content" class="mainbgr">
             <div class="row-fluid">
                 <div class="span10 offset1">
-                    <ul data-inset="true" data-role="listview">
+                    <ul data-inset="true" data-role="listview" style="margin-top: 9em;">
                         <li>
-                            <a href="#" onclick="refreshPromoList();" class="btn btn-large" data-shadow="true"><i class="icon-white icon-map-marker"></i> Promos cercanas</a>
+                            <a href="#" onclick="refreshPromoList();" class="btn btn-large" data-shadow="true"><i class="icon-map-marker"></i> Promos cercanas</a>
                         </li>
                         <li>
-                            <a href="#" onclick="gotoSearch();" class="btn btn-large" data-shadow="true"><i class="icon-white icon-search"></i> Buscar por ciudad</a>
+                            <a href="#" onclick="gotoSearch();" class="btn btn-large" data-shadow="true"><i class="icon-search"></i> Buscar por ciudad</a>
                         </li>
                         <li>
-                            <a href="#" onclick="gotoCategories();" class="btn btn-large" data-shadow="true"><i class="icon-white icon-filter"></i> Filtrar categorías</a>
+                            <a href="#" onclick="gotoCategories();" class="btn btn-large" data-shadow="true"><i class="icon-filter"></i> Filtrar categorías</a>
                         </li>
                         <li>
-                            <a href="#" onclick="gotoFavoritos();" class="btn btn-large" data-shadow="true"><i class="icon-white icon-star"></i> Mis favoritas</a>
+                            <a href="#" onclick="gotoFavoritos();" class="btn btn-large" data-shadow="true"><i class="icon-star"></i> Mis favoritas</a>
                         </li>
                         <li>
-                            <a href="#contacto" class="btn btn-large" data-shadow="true"><i class="icon-white icon-envelope"></i> Contacto</a>
+                            <a href="#contacto" class="btn btn-large" data-shadow="true"><i class="icon-envelope"></i> Contacto</a>
                         </li>
                     
                     </ul>    
